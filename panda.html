@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Panda!</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      height: 100%;
+      background: linear-gradient(to bottom, #fff0f5, #ffe4e1);
+    }
+
+    .gift-container {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff0f5;
+      z-index: 999;
+      transition: all 1s ease-in-out;
+      text-align: center;
+    }
+
+    .surprise-text {
+      font-size: 2em;
+      color: #d81b60;
+      margin-bottom: 30px;
+      max-width: 90%;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    .giftbox {
+      width: 150px;
+      height: 150px;
+      background: #ff69b4;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .giftbox::before, .giftbox::after {
+      content: "";
+      position: absolute;
+      background: white;
+    }
+
+    .giftbox::before {
+      width: 20px;
+      height: 150px;
+      left: 65px;
+      top: 0;
+    }
+
+    .giftbox::after {
+      width: 150px;
+      height: 20px;
+      top: 65px;
+      left: 0;
+    }
+
+    .lid {
+      width: 160px;
+      height: 40px;
+      background: #ff1493;
+      position: absolute;
+      top: -40px;
+      left: -5px;
+      border-radius: 5px;
+      transition: transform 1s ease;
+    }
+
+    .open .lid {
+      transform: rotate(-45deg) translate(-100px, -100px);
+    }
+
+    .hidden-content {
+      display: none;
+    }
+
+    .show-content {
+      display: block;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .main-content {
+      text-align: center;
+      padding: 30px;
+      max-width: 700px;
+      margin: 0 auto;
+      z-index: 10;
+      position: relative;
+    }
+
+    h1 {
+      color: #e91e63;
+      font-size: 3em;
+      margin-top: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    .love-game {
+      margin-top: 40px;
+    }
+
+    .love-btn {
+      padding: 12px 24px;
+      background: #ff4081;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 10px;
+    }
+
+    .love-btn:hover {
+      background: #e91e63;
+    }
+
+    #game-response {
+      margin-top: 15px;
+      font-size: 1.3em;
+      color: #d5006e;
+    }
+
+    .emoji {
+      position: fixed;
+      top: -50px;
+      font-size: 2rem;
+      z-index: 1;
+      animation: floatDown linear infinite;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    @keyframes floatDown {
+      from {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gift-container" id="giftContainer">
+    <div class="surprise-text">
+      🎉 <strong>Happy Birthday, Panda! 🎂</strong> 🎉<br><br>
+      Bubu has a special surprise for you 💝<br>
+      Tap on the gift box below to open your love-filled surprise 🎁
+    </div>
+    <div class="giftbox" onclick="openGift()">
+      <div class="lid"></div>
+    </div>
+  </div>
+
+  <div class="hidden-content" id="birthdayContent">
+    <div class="main-content">
+      <h1>Happy Birthday, Panda!</h1>
+      Even across the distance, my heart always stays close to yours. No matter what happens, please never leave me. This boy loves you so much — more than you could ever imagine. You are my everything, my world, my dream come true.<br><br>
+      Always remember: <strong>Ami tumaka bhalo bashi 😘</strong> 💖<br><br>
+      Forever yours,<br><strong>Bubu</strong>
+
+      <div class="love-game">
+        <h2>Let Me Ask You Some Question, My Love 💌</h2>
+        <p>Do you love Bubu?</p>
+        <button class="love-btn" onclick="respondLove(true)">Yes, forever!</button>
+        <button class="love-btn" id="maybeBtn" onclick="respondLove(false)">Umm... maybe?</button>
+        <div id="game-response"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page 1: Happy Birthday Music -->
+  <audio id="page1-music" preload="auto">
+    <source src="https://mr-jat.in/dlod/6051?&volume=75&showstop=1&showvolume=1" type="audio/mp3">
+  </audio>
+
+  <!-- Page 2: Love Music -->
+  <audio id="page2-music" preload="auto">
+    <source src="https://mr-jat.in/dlod/6239?&volume=75&showstop=1&showvolume=1" type="audio/mp3">
+  </audio>
+
+  <script>
+    // Play page1 music after user interaction
+    window.addEventListener('click', () => {
+      const music = document.getElementById("page1-music");
+      if (music.paused) {
+        music.play().catch(() => {});
+      }
+    }, { once: true });
+
+    function openGift() {
+      document.getElementById("giftContainer").classList.add("open");
+
+      setTimeout(() => {
+        document.getElementById("giftContainer").style.display = "none";
+        document.getElementById("birthdayContent").classList.add("show-content");
+
+        // Switch music
+        document.getElementById("page1-music").pause();
+        document.getElementById("page2-music").play();
+      }, 1200);
+    }
+
+    let maybeClickCount = 0;
+
+    function respondLove(love) {
+      const response = document.getElementById("game-response");
+      const maybeBtn = document.getElementById("maybeBtn");
+
+      if (love) {
+        response.innerText = "Yay! I love you too, Panda!";
+      } else {
+        maybeClickCount++;
+        if (maybeClickCount < 3) {
+          response.innerText = "I'll ask again until you say YES!";
+          maybeBtn.style.transform = `scale(${1 - maybeClickCount * 0.2})`;
+        } else {
+          maybeBtn.style.display = "none";
+          const newBtn = document.createElement("button");
+          newBtn.className = "love-btn";
+          newBtn.innerText = "I’m very clever now you have to marry me 💍";
+          newBtn.onclick = () => {
+            response.innerText = "Yes! Let's plan our wedding!";
+          };
+          maybeBtn.parentNode.insertBefore(newBtn, response);
+        }
+      }
+    }
+
+    // Floating emojis
+    const emojis = ['🌹', '💖', '🎉',];
+    for (let i = 0; i < 40; i++) {
+      const emoji = document.createElement('div');
+      emoji.className = 'emoji';
+      emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      emoji.style.animationDelay = Math.random() * 10 + 's';
+      emoji.style.fontSize = (Math.random() * 20 + 24) + 'px';
+      document.body.appendChild(emoji);
+    }
+  </script>
+</body>
+</html>
+
+
